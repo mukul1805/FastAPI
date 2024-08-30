@@ -35,3 +35,15 @@ def create(request: schemas.Blog, db: Session = Depends(get_db)):        #reques
     db.commit()
     db.refresh(new_blog)
     return new_blog
+
+# to get all the blogs
+@app.get('/blog')
+def all_blog(db: Session = Depends(get_db)):
+    blogs = db.query(models.Blog).all()
+    return blogs
+
+# to get blog with particular id
+@app.get('/blog/{id}')
+def show_with_id(id,db: Session = Depends(get_db)):
+    blog_with_id = db.query(models.Blog).filter(models.Blog.id == id).first()   #where condition in sqlalchemy
+    return blog_with_id
