@@ -2,8 +2,7 @@
 
 from fastapi import FastAPI, Depends
 # from pydantic import BaseModel
-from . import schemas
-from . import models
+from . import schemas,models
 from .database import engine,SessionLocal
 from sqlalchemy.orm import Session
 
