@@ -1,6 +1,6 @@
 #uvicorn Blog.main:app --reload to run this main.py
 
-from fastapi import FastAPI, Depends , status
+from fastapi import FastAPI, Depends , status, Response , HTTPException
 # from pydantic import BaseModel
 from . import schemas,models
 from .database import engine,SessionLocal
@@ -44,6 +44,17 @@ def all_blog(db: Session = Depends(get_db)):
 # to get blog with particular id
 #@app.get('/blog/{id}', status_code=201)                  #we can manually add status_code also!
 @app.get('/blog/{id}', status_code=status.HTTP_201_CREATED)         #to get status auto
-def show_with_id(id,db: Session = Depends(get_db)):
+def show_with_id(id, response=Response, db: Session = Depends(get_db)):
     blog_with_id = db.query(models.Blog).filter(models.Blog.id == id).first()   #where condition in sqlalchemy
+    if not blog_with_id:
+        # response.status_code=status.HTTP_404_NOT_FOUND
+        # return {f"Blog with id {id} is not available!"}
+
+        # return Response(
+        #     content=f"Blog with id {id} is not available!",
+        #     status_code=status.HTTP_404_NOT_FOUND
+        # )
+
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Blog with id {id} is not available!")
     return blog_with_id
