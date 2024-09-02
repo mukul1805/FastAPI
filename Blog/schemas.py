@@ -11,3 +11,11 @@ class showBlog(BaseModel):       #we can use BaseModel as well, but is shows all
     body:str
     class Config():
         orm_mode =True
+
+
+#creating schema for user
+
+class User(BaseModel):
+    name: str
+    email:str
+    password:str
