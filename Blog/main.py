@@ -42,7 +42,7 @@ def all_blog(db: Session = Depends(get_db)):
     return blogs
 
 # to get blog with particular id
-@app.get('/blog/{id}')
+@app.get('/blog/{id}', status_code=201)                  #we can manually add status_code also!
 def show_with_id(id,db: Session = Depends(get_db)):
     blog_with_id = db.query(models.Blog).filter(models.Blog.id == id).first()   #where condition in sqlalchemy
     return blog_with_id
