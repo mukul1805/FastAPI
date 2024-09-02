@@ -7,6 +7,8 @@ from . import schemas,models
 from .database import engine,SessionLocal
 from sqlalchemy.orm import Session
 
+from .hashing import Hash       
+
 app=FastAPI()
 
 models.Base.metadata.create_all(engine)
@@ -95,8 +97,16 @@ def update(id, request= schemas.Blog ,db: Session = Depends(get_db)):
 @app.post('/user')
 def create_user(request: schemas.User, db: Session = Depends(get_db)):
     # new_user = models.User(request)     #only request will not work, use 
-    new_user = models.User(name=request.name, email=request.email, password=request.password)
+    # hashed_password = pwd_cxt.hash(request.password)
+    new_user = models.User(name=request.name, email=request.email, password=Hash.bcrypt(request.password))
     db.add(new_user)
     db.commit()
     db.refresh(new_user)        #refresh at new_user
     return new_user
+
+@app.get('/user')
+def all_user(db: Session = Depends(get_db)):
+    users = db.query(models.User).all()
+    return users
+
+#CRUD is performed upto here
