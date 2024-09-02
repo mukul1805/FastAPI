@@ -29,8 +29,8 @@ def get_db():
     finally:
         db.close()
 
-@app.post('/blog')
-def create(request: schemas.Blog, db: Session = Depends(get_db)):        #request is of type Blog
+@app.post('/blog',tags=['Blog'])                  #using tags for segregating 
+def create(request: schemas.Blog, db: Session = Depends(get_db)):        #request is of type Blog 
     # return request
     new_blog = models.Blog(title=request.title,body=request.body)
     db.add(new_blog)
@@ -39,7 +39,7 @@ def create(request: schemas.Blog, db: Session = Depends(get_db)):        #reques
     return new_blog
 
 # to get all the blogs
-@app.get('/blog', response_model=list[schemas.showBlog])        #using List bcz ot multiple responses
+@app.get('/blog', response_model=list[schemas.showBlog],tags=['Blog'])        #using List bcz ot multiple responses
 def all_blog(db: Session = Depends(get_db)):
     blogs = db.query(models.Blog).all()
     return blogs
@@ -47,7 +47,7 @@ def all_blog(db: Session = Depends(get_db)):
 # to get blog with particular id
 #@app.get('/blog/{id}', status_code=201)                  #we can manually add status_code also!
 # @app.get('/blog/{id}', status_code=status.HTTP_201_CREATED)         #to get status auto
-@app.get('/blog/{id}', status_code=201, response_model=schemas.showBlog)         #to get response_model as defined in schema
+@app.get('/blog/{id}', status_code=201, response_model=schemas.showBlog,tags=['Blog'])         #to get response_model as defined in schema
 def show_with_id(id, response=Response, db: Session = Depends(get_db)):
     blog_with_id = db.query(models.Blog).filter(models.Blog.id == id).first()   #where condition in sqlalchemy
     if not blog_with_id:
@@ -68,7 +68,7 @@ def show_with_id(id, response=Response, db: Session = Depends(get_db)):
 
 #to delete  blog with particular id
 
-@app.delete("/blog/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@app.delete("/blog/{id}", status_code=status.HTTP_204_NO_CONTENT,tags=['Blog'])
 def destroy(id, db: Session = Depends(get_db)):
     blog=db.query(models.Blog).filter(models.Blog.id == id)
     if not blog.first():
@@ -80,7 +80,7 @@ def destroy(id, db: Session = Depends(get_db)):
 
 #to update data
 
-@app.put('/blog/{id}', status_code=status.HTTP_202_ACCEPTED)
+@app.put('/blog/{id}', status_code=status.HTTP_202_ACCEPTED,tags=['Blog'])
 def update(id, request= schemas.Blog ,db: Session = Depends(get_db)):
     blog=db.query(models.Blog).filter(models.Blog.id == id)
     if not blog.first():
@@ -94,7 +94,7 @@ def update(id, request= schemas.Blog ,db: Session = Depends(get_db)):
 
 # to create a new User
 
-@app.post('/user',response_model=schemas.showUser)
+@app.post('/user',response_model=schemas.showUser,tags=['User'])
 def create_user(request: schemas.User, db: Session = Depends(get_db)):
     # new_user = models.User(request)     #only request will not work, use 
     # hashed_password = pwd_cxt.hash(request.password)
@@ -104,12 +104,12 @@ def create_user(request: schemas.User, db: Session = Depends(get_db)):
     db.refresh(new_user)        #refresh at new_user
     return new_user
 
-@app.get('/user')
+@app.get('/user',tags=['User'])
 def all_user(db: Session = Depends(get_db)):
     users = db.query(models.User).all()
     return users
 
-@app.get('/user/{id}',response_model=schemas.showUser)
+@app.get('/user/{id}',response_model=schemas.showUser,tags=['User'])
 def user_by_id(id=int, db: Session = Depends(get_db)):
     user_with_id = db.query(models.User).filter(models.User.id == id).first()   #where condition in sqlalchemy
     if not user_with_id:
