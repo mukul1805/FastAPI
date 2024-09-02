@@ -94,7 +94,7 @@ def update(id, request= schemas.Blog ,db: Session = Depends(get_db)):
 
 # to create a new User
 
-@app.post('/user')
+@app.post('/user',response_model=schemas.showUser)
 def create_user(request: schemas.User, db: Session = Depends(get_db)):
     # new_user = models.User(request)     #only request will not work, use 
     # hashed_password = pwd_cxt.hash(request.password)
@@ -109,4 +109,10 @@ def all_user(db: Session = Depends(get_db)):
     users = db.query(models.User).all()
     return users
 
-#CRUD is performed upto here
+@app.get('/user/{id}',response_model=schemas.showUser)
+def user_by_id(id=int, db: Session = Depends(get_db)):
+    user_with_id = db.query(models.User).filter(models.User.id == id).first()   #where condition in sqlalchemy
+    if not user_with_id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"User with id {id} is not available!")
+    return user_with_id
