@@ -58,3 +58,14 @@ def show_with_id(id, response=Response, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Blog with id {id} is not available!")
     return blog_with_id
+
+
+
+
+#to delete  blog with particular id
+
+@app.delete("/blog/{id}", status_code=status.HTTP_204_NO_CONTENT)
+def destroy(id, db: Session = Depends(get_db)):
+    db.query(models.Blog).filter(models.Blog.id == id).delete(synchronize_session=False)
+    db.commit()     #after alterning DB always commit it!
+    return {"Delete Successfully...!"}
