@@ -1,5 +1,6 @@
 #uvicorn Blog.main:app --reload to run this main.py
 
+from typing import List
 from fastapi import FastAPI, Depends , status, Response , HTTPException
 # from pydantic import BaseModel
 from . import schemas,models
@@ -36,14 +37,15 @@ def create(request: schemas.Blog, db: Session = Depends(get_db)):        #reques
     return new_blog
 
 # to get all the blogs
-@app.get('/blog')
+@app.get('/blog', response_model=list[schemas.showBlog])        #using List bcz ot multiple responses
 def all_blog(db: Session = Depends(get_db)):
     blogs = db.query(models.Blog).all()
     return blogs
 
 # to get blog with particular id
 #@app.get('/blog/{id}', status_code=201)                  #we can manually add status_code also!
-@app.get('/blog/{id}', status_code=status.HTTP_201_CREATED)         #to get status auto
+# @app.get('/blog/{id}', status_code=status.HTTP_201_CREATED)         #to get status auto
+@app.get('/blog/{id}', status_code=201, response_model=schemas.showBlog)         #to get response_model as defined in schema
 def show_with_id(id, response=Response, db: Session = Depends(get_db)):
     blog_with_id = db.query(models.Blog).filter(models.Blog.id == id).first()   #where condition in sqlalchemy
     if not blog_with_id:
