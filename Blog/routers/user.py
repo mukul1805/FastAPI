@@ -5,7 +5,10 @@ from .. import schemas, database,models
 from ..hashing import Hash       
 
 
-router = APIRouter()
+router = APIRouter(
+    # tags=['User']       #we can directly use it here only
+    # prefix="/blog"      we can remove blog from below
+)
 
 get_db= database.get_db
 
