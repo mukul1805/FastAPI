@@ -2,6 +2,7 @@ fastapi
 uvicorn
 pydantic
 sqlalchemy
+passlib
 
 #pip3 install -r requiremnets.txt   # to install it all above mentioned
 
