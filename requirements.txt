@@ -5,7 +5,7 @@ sqlalchemy
 passlib
 bcrypt
 
-#pip3 install -r requiremnets.txt   # to install it all above mentioned
+#pip3 install -r requirements.txt   # to install it all above mentioned
 
 # to create virtual environment
 #python -m venv blog-env
