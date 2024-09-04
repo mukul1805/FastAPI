@@ -29,3 +29,9 @@ class showBlog(BaseModel):       #we can use BaseModel as well, but is shows all
     class Config():
         orm_mode =True
 
+
+#for login
+
+class Login(BaseModel):
+    username: str
+    password: str

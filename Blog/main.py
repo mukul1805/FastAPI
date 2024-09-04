@@ -6,7 +6,7 @@ from fastapi import FastAPI, Depends , status, Response , HTTPException
 from . import schemas,models
 from .database import engine, get_db
 from sqlalchemy.orm import Session
-from .routers import blog,user
+from .routers import blog,user, authentication
 
 from .hashing import Hash       
 
@@ -16,6 +16,7 @@ models.Base.metadata.create_all(engine)
 
 
 #as we have created the separate router,
+app.include_router(authentication.router)
 app.include_router(blog.router)
 app.include_router(user.router)
 
