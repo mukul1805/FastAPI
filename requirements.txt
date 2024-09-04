@@ -4,6 +4,7 @@ pydantic
 sqlalchemy
 passlib
 bcrypt
+python-jose
 
 #pip3 install -r requirements.txt   # to install it all above mentioned
 

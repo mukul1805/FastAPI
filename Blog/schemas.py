@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import List,Optional
 
 
 #creating schema for user
@@ -35,3 +36,15 @@ class showBlog(BaseModel):       #we can use BaseModel as well, but is shows all
 class Login(BaseModel):
     username: str
     password: str
+
+
+
+#for token
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    username: Optional[str] = None
