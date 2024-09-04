@@ -46,7 +46,7 @@ async def hello(name:str,age:int):
 
 
 @app.get("/bloging")
-def index(limit=10,published:bool=True, sort: Optional[str]=None):      #defalt valur setting, and setting optional
+def index(limit=10,published:bool=True, sort: Optional[str]=None):      #default value setting, and setting optional
     if published:
         return {'Data': f'{limit} published blogs'}
     else:
@@ -61,15 +61,12 @@ if __name__ == "__main__":
 
 
 
-#code is readed line by line, so pehle wo integer expect krega (dynamic routing), esliye error at unpublised
-
-
+#code is readed line by line, 
+# so it will expect integer (dynamic routing), thats why error at unpublised
 # so, move unpublised to above dynamic routing
 
 # we can use swagger UI at / docs i.e.,http://127.0.0.1:8000/docs
-
 # we can use redoc at / docs i.e.,http://127.0.0.1:8000/redoc
-
 # http://127.0.0.1:8000/openapi.json use this URL in the browser to generate automatically the interactive documentation.
 
 
