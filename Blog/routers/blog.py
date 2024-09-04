@@ -3,17 +3,20 @@ from typing import List
 from .. import schemas, database,models
 from sqlalchemy.orm import Session
 from .. repository import blog
+from . import oauth2
 
 router = APIRouter()
 
 @router.get('/blog', response_model=list[schemas.showBlog],tags=['Blog'])        #using List bcz ot multiple responses
-def all_blog(db: Session = Depends(database.get_db)):
+def all_blog(db: Session = Depends(database.get_db),current_user: schemas.User = Depends(oauth2.get_current_user)):
     # blogs = db.query(models.Blog).all()
     # return blogs
     return blog.get_all(db)
 
+#current_user: schemas.User = Depends(oauth2.get_current_user) using this, we authorise the link
+
 @router.post('/blog',tags=['Blog'])                  #using tags for segregating 
-def create(request: schemas.Blog, db: Session = Depends(database.get_db)):        #request is of type Blog 
+def create(request: schemas.Blog, db: Session = Depends(database.get_db), current_user: schemas.User = Depends(oauth2.get_current_user)):        #request is of type Blog 
     # return request
     # new_blog = models.Blog(title=request.title,body=request.body,user_id=1)     #Hardcoded user_id here
     # db.add(new_blog)
@@ -33,7 +36,7 @@ def show_with_id(id, response=Response, db: Session = Depends(database.get_db)):
 
 #to delete  blog with particular id
 @router.delete("/blog/{id}", status_code=status.HTTP_204_NO_CONTENT,tags=['Blog'])
-def destroy(id, db: Session = Depends(database.get_db)):
+def destroy(id, db: Session = Depends(database.get_db),current_user: schemas.User = Depends(oauth2.get_current_user)):
     # blog=db.query(models.Blog).filter(models.Blog.id == id)
     # if not blog.first():
     #     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
@@ -44,7 +47,7 @@ def destroy(id, db: Session = Depends(database.get_db)):
 
 #to update data
 @router.put('/blog/{id}', status_code=status.HTTP_202_ACCEPTED,tags=['Blog'])
-def update(id, request= schemas.Blog ,db: Session = Depends(database.get_db)):
+def update(id, request= schemas.Blog ,db: Session = Depends(database.get_db),current_user: schemas.User = Depends(oauth2.get_current_user)):
     # blog=db.query(models.Blog).filter(models.Blog.id == id)
     # if not blog.first():
     #     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
