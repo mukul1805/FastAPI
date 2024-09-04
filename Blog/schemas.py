@@ -12,7 +12,7 @@ class showUser(BaseModel):
     name:str
     email:str
     class Config():
-        orm_mode =True
+        orm_mode =True          #to interact with another class
 
 
 #schema from blog
