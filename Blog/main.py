@@ -15,7 +15,7 @@ from . import models
 
 app=FastAPI()
 
-models.Base.metadata.create_all(engine)
+models.Base.metadata.create_all(engine)     #to create tables 
 
 
 #as we have created the separate router,

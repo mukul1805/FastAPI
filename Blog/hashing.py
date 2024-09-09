@@ -1,4 +1,4 @@
-from passlib.context import CryptContext        #Hashing
+from passlib.context import CryptContext        #Hashing library
 
 pwd_cxt = CryptContext(schemes=["bcrypt"], deprecated="auto")       #bcrypt is an algo
 

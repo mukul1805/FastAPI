@@ -19,7 +19,7 @@ def create_access_token(data: dict):
     # else:
     expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)    # {'sub': ; value, 'exp':'value'}
     return encoded_jwt
 
 def verify_token(token:str, credentials_exception):
@@ -29,5 +29,6 @@ def verify_token(token:str, credentials_exception):
         if email is None:
             raise credentials_exception
         token_data = schemas.TokenData(email=email)
-    except JWTError:
+    except JWTError as e:
+        print(f"Token verification failed: {e}")
         raise credentials_exception

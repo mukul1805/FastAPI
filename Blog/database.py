@@ -4,14 +4,14 @@ from sqlalchemy.orm import sessionmaker
 
 SQLALCHEMY_DATABASE_URL = 'sqlite:///C:/Users/mukulkumar.sahu/Desktop/FastAPI/Blog/blog.db'
 
-engine = create_engine(SQLALCHEMY_DATABASE_URL,connect_args={"check_same_thread": False})
+engine = create_engine(SQLALCHEMY_DATABASE_URL,connect_args={"check_same_thread": False})   #connection
 
 #creating a session
-SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
+SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)                 #interaction
                             #bind=engine ensures that all table is created that is specified in the engine
 
-#declare a mapping
-Base = declarative_base()
+#declare a mapping  
+Base = declarative_base()           #
 
 
 def get_db():
