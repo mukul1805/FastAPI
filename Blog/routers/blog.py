@@ -4,10 +4,12 @@ from .. import schemas, database        #,models
 from sqlalchemy.orm import Session
 from .. repository import blog
 from . import oauth2
+from fastapi_cache.decorator import cache
 
 router = APIRouter()
 
 @router.get('/blog', response_model=list[schemas.showBlog],tags=['Blog'])        #using List bcz ot multiple responses
+@cache(expire=60)  # Cache the response for 60 seconds
 def all_blog(db: Session = Depends(database.get_db),current_user: schemas.User = Depends(oauth2.get_current_user)):
     # blogs = db.query(models.Blog).all()
     # return blogs
@@ -26,6 +28,7 @@ def create(request: schemas.Blog, db: Session = Depends(database.get_db), curren
     return blog.create(request,db)
 
 @router.get('/blog/{id}', status_code=201, response_model=schemas.showBlog,tags=['Blog'])         #to get response_model as defined in schema
+@cache(expire=60)  # Cache the response for 60 seconds
 def show_with_id(id, response=Response, db: Session = Depends(database.get_db)):
     # blog_with_id = db.query(models.Blog).filter(models.Blog.id == id).first()   #where condition in sqlalchemy
     # if not blog_with_id:

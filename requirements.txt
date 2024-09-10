@@ -6,6 +6,8 @@ passlib
 bcrypt
 python-jose
 python-multipart
+fastapi-cache2 
+redis           #cache
 
 #pip3 install -r requirements.txt   # to install it all above mentioned
 

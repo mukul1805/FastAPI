@@ -33,6 +33,7 @@ def update(id:int , request: schemas.Blog, db: Session):
 
 def show(id:int, response: Response, db:Session):
     blog_with_id = db.query(models.Blog).filter(models.Blog.id == id).first()   #where condition in sqlalchemy
+    print(f"Fetching blog with ID {id} from the database.")
     if not blog_with_id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Blog with id {id} is not available!")
     return blog_with_id

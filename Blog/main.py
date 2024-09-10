@@ -4,6 +4,7 @@ from .routers import blog, user, authentication
 from fastapi import FastAPI
 from .database import engine
 from . import models
+from .config_cache import init_cache
 
 # from typing import List
 # from fastapi import FastAPI, Depends , status, Response , HTTPException
@@ -18,12 +19,22 @@ app=FastAPI()
 models.Base.metadata.create_all(engine)     #to create tables 
 
 
+@app.on_event("startup")
+async def startup():
+    await init_cache()  # Initialize Redis cache during startup
+
+
 #as we have created the separate router,
 app.include_router(authentication.router)
 app.include_router(blog.router)
 app.include_router(user.router)
 
 
+
+# Optional shutdown event
+# @app.on_event("shutdown")
+# async def shutdown():
+#     await redis.close()
 
 
 # @app.post('/blog')
